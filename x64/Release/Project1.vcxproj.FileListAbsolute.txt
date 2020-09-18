@@ -1,0 +1,2 @@
+G:\cpp\Project1\x64\Release\LineComputer.exe
+G:\cpp\LineComputer\x64\Release\LineComputer.exe

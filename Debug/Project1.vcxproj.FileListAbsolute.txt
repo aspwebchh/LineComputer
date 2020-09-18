@@ -1,0 +1,4 @@
+C:\Users\宏鸿\OneDrive\project\Project1\Debug\Project1.exe
+C:\Users\宏鸿\OneDrive\project\Project1\Debug\Project1.pdb
+G:\cpp\Project1\Debug\LineComputer.exe
+G:\cpp\Project1\Debug\LineComputer.pdb
