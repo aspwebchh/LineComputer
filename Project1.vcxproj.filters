@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="hello_world.cpp">
+    <ClCompile Include="FileUtil.h">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="FileUtil.h">
+    <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -26,14 +26,14 @@
     <ClInclude Include="BlockingQueue.h">
       <Filter>源文件</Filter>
     </ClInclude>
-    <ClInclude Include="hello_world.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="ThreadPool.h">
       <Filter>源文件</Filter>
     </ClInclude>
     <ClInclude Include="structs.h">
       <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -8,6 +8,7 @@
 #include <tuple>
 #include <map>
 #include <list>
+#include <regex>
 #include "structs.h"
 
 using namespace std;
@@ -20,7 +21,7 @@ public:
 
 	static void initConfig() {
 		auto text = FileUtil::readText("config.conf");
-		FileUtil::split(text, *exts, ",");
+		FileUtil::splitAndTrim(text, *exts, ",");
 	}
 
 	static bool isBlank(std::string& s)
@@ -37,11 +38,18 @@ public:
 		return true;
 	}
 
-	static void split(const string& s, vector<string>& tokens, const string& delimiters = " ") {
+	static string trim(string str) {
+		std::regex reg("^(\\s*)|(\\s*)$");
+	    return std::regex_replace(str, reg,"");
+	}
+
+
+	static void splitAndTrim(const string& s, vector<string>& tokens, const string& delimiters = " ") {
 		string::size_type lastPos = s.find_first_not_of(delimiters, 0); 
 		string::size_type pos = s.find_first_of(delimiters, lastPos); 
 		while (string::npos != pos || string::npos != lastPos) {
-			tokens.push_back(s.substr(lastPos, pos - lastPos));//use emplace_back after C++11 
+			auto item = s.substr(lastPos, pos - lastPos);
+			tokens.push_back(trim(item));//use emplace_back after C++11 
 			lastPos = s.find_first_not_of(delimiters, pos);
 			pos = s.find_first_of(delimiters, lastPos);
 		}
@@ -58,14 +66,14 @@ public:
 
 	static void getFileNameAndExt(const string& path, FileItem& fileItem) {
 		vector<string> results;
-		FileUtil::split(path, results, "\\");
+		FileUtil::splitAndTrim(path, results, "\\");
 	
 		string fileName = results[results.size() - 1];
 		results.clear();
 
 		fileItem.fileName = fileName;
 
-		FileUtil::split(fileName, results, ".");
+		FileUtil::splitAndTrim(fileName, results, ".");
 		if (results.size() == 2) {
 			fileItem.extName = results[1];
 		}

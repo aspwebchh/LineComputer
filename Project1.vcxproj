@@ -140,11 +140,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="FileUtil.h" />
-    <ClCompile Include="hello_world.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BlockingQueue.h" />
-    <ClInclude Include="hello_world.h" />
+    <ClInclude Include="main.h" />
     <ClInclude Include="structs.h" />
     <ClInclude Include="ThreadPool.h" />
   </ItemGroup>

@@ -12,46 +12,35 @@
 
 using namespace std;
 
-FileItem fileItem;
-LineInfo lineInfo;
-
-void getResultItem(const string &perPath,  LineInfo &lineInfo) {
-	FileUtil::getFileNameAndExt(perPath, fileItem);
-	string fileName = fileItem.fileName;
-	string ext = fileItem.extName;
-	bool isTextFile = FileUtil::isTextFile(ext);
-	int textFileLineQuantity = 0;
-	if (isTextFile) {
-		textFileLineQuantity = FileUtil::lineQuantity(perPath);
-	}
-	lineInfo.ext = ext;
-	lineInfo.lineCount = textFileLineQuantity;
-}
+map<string, int> lineMap;
+map<string, int> fileMap;
+mutex mlock;
 
 
 int main() {
 	FileUtil::initConfig();
 
-	ThreadPool threadPool(20);
-	mutex lock;
-	char dir[200];
+	ThreadPool threadPool(50);
+	char dir[1024];
 	cout << "code project path: ";
 	cin.getline(dir, 200);
 	vector<string>allPath = FileUtil::getFilesList(dir);
-	map<string,int> lineMap;
-	map<string,int> fileMap;
 	auto count = allPath.size();
-	//cout << count << endl;
-	//cout << "输出所有文件的路径：" << endl;
+
 	for (int i = 0; i < count; i++)
 	{
 		string perPath = allPath.at(i);
+		FileItem fileItem;
+		FileUtil::getFileNameAndExt(perPath, fileItem);
+		bool isTextFile = FileUtil::isTextFile(fileItem.extName);
+		if (!isTextFile) {
+			continue;
+		}
 		
-		threadPool.execute([perPath,&lineMap,&fileMap,&count, &lock]() {
-			getResultItem(perPath, lineInfo);
-			lock.lock();
-			string ext = lineInfo.ext;
-			int lineCount = lineInfo.lineCount;
+		threadPool.execute([perPath,fileItem]() {
+			int lineCount = FileUtil::lineQuantity(perPath);
+			string ext = fileItem.extName;
+			mlock.lock();
 			if (lineMap.count(ext) >= 1) {
 				lineMap[ext] = lineMap.at(ext) + lineCount;
 			}
@@ -64,13 +53,13 @@ int main() {
 			else {
 				fileMap[ext] = 1;
 			}
-			lock.unlock();
+			mlock.unlock();
 		});
 	}
 
 	while (threadPool.taskCount() > 0) {
+		//std::this_thread::sleep_for(std::chrono::milliseconds(500));
 		Sleep(500);
-		//cout << "剩余任务数量：" << threadPool.taskCount() << endl;
 	}
 	//排序输出
 	typedef pair<string, int> PAIR;
