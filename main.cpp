@@ -2,11 +2,9 @@
 #include <vector>
 #include <string>
 #include <iostream>
-#include <queue>
-#include <functional>
 #include "ThreadPool.h"
 #include "FileUtil.h"
-#include<windows.h>
+#include <windows.h>
 #include <mutex>
 #include <map>
 
