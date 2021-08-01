@@ -24,7 +24,8 @@ int main() {
 	char dir[1024];
 	cout << "code project path: ";
 	cin.getline(dir, 200);
-	vector<string>allPath = FileUtil::getFilesList(dir);
+	vector<string>allPath;
+	FileUtil::getFilesList(dir, allPath);
 	auto count = allPath.size();
 
 	for (int i = 0; i < count; i++)

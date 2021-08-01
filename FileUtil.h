@@ -114,9 +114,8 @@ public:
 		return result;
 	}
 
-	static vector<string> getFilesList(const string &dir)
+	static void getFilesList(const string& dir, vector<string>& result)
 	{
-		vector<string> allPath;
 		// 在目录后面加上"\\*.*"进行第一次搜索
 		string dir2 = dir + "\\*.*";
 
@@ -126,7 +125,7 @@ public:
 		handle = _findfirst(dir2.c_str(), &findData);
 		if (handle == -1) {// 检查是否成功
 			cout << "can not found the file ... " << endl;
-			return allPath;
+			return;
 		}
 		do
 		{
@@ -138,17 +137,16 @@ public:
 
 				// 在目录后面加上"\\"和搜索到的目录名进行下一次搜索
 				string dirNew = dir + "\\" + findData.name;
-				vector<string> tempPath = getFilesList(dirNew);
-				allPath.insert(allPath.end(), tempPath.begin(), tempPath.end());
+				getFilesList(dirNew, result);
 			}
 			else //不是子目录，即是文件，则输出文件名和文件的大小
 			{
 				string filePath = dir + "\\" + findData.name;
-				allPath.push_back(filePath);
+				result.push_back(filePath);
 				//cout << filePath << "\t" << findData.size << " bytes.\n";
 			}
 		} while (_findnext(handle, &findData) == 0);
 		_findclose(handle);    // 关闭搜索句柄
-		return allPath;
+		return;
 	}
 };
